@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper>
+    <sql id="CRITERION_SQL">
+        <choose>
+            <when test="criterion.noValue">
+                ${criterion.property} ${criterion.operator}
+            </when>
+            <when test="criterion.singleValue">
+                ${criterion.property} ${criterion.operator} #{criterion.value}
+            </when>
+            <when test="criterion.twinsValue">
+                ${criterion.property} ${criterion.operator} #{criterion.value} AND #{criterion.secondValue}
+            </when>
+            <when test="criterion.sqlValue">
+                ${criterion.value}
+            </when>
+            <when test="criterion.listValue">
+                ${criterion.property} ${criterion.operator}
+                <foreach collection="criterion.value" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <when test="criterion.andCriterionValue">
+                <foreach collection="criterion.value" item="item" open="(" close=")" separator="AND">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="item.noValue">
+                                ${item.property} ${item.operator}
+                            </when>
+                            <when test="item.singleValue">
+                                ${item.property} ${item.operator} #{item.value}
+                            </when>
+                            <when test="item.twinsValue">
+                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                            </when>
+                            <when test="item.sqlValue">
+                                ${item.value}
+                            </when>
+                            <when test="item.listValue">
+                                ${item.property} ${item.operator}
+                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                    #{itemValue}
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </when>
+            <when test="criterion.orCriterionValue">
+                <foreach collection="criterion.value" item="item" open="(" close=")" separator="OR">
+                    <trim prefix="(" suffix=")">
+                        <choose>
+                            <when test="item.noValue">
+                                ${item.property} ${item.operator}
+                            </when>
+                            <when test="item.singleValue">
+                                ${item.property} ${item.operator} #{item.value}
+                            </when>
+                            <when test="item.twinsValue">
+                                ${item.property} ${item.operator} #{item.value} AND #{item.secondValue}
+                            </when>
+                            <when test="item.sqlValue">
+                                ${item.value}
+                            </when>
+                            <when test="item.listValue">
+                                ${item.property} ${item.operator}
+                                <foreach collection="item.value" item="itemValue" open="(" close=")" separator=",">
+                                    #{itemValue}
+                                </foreach>
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </when>
+        </choose>
+    </sql>
+
+    <sql id="WHERE_SQL">
+        <where>
+            <if test="params.andCriterion != null and !params.andCriterion.isEmpty">
+                <foreach collection="params.andCriterion" item="criterion">
+                    <trim prefix="AND (" suffix=")">
+                        <include refid="CRITERION_SQL"/>
+                    </trim>
+                </foreach>
+            </if>
+            <if test="params.orCriterion != null and !params.orCriterion.isEmpty">
+                <foreach collection="params.orCriterion" item="criterion">
+                    <trim prefix="OR (" suffix=")">
+                        <include refid="CRITERION_SQL"/>
+                    </trim>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <sql id="GROUP_BY_SQL">
+        GROUP BY
+        <foreach collection="params.groupBy" item="item" separator=",">
+            ${item.property}
+        </foreach>
+    </sql>
+
+    <sql id="ORDER_BY_SQL">
+        ORDER BY
+        <foreach collection="params.orderBy" item="item" separator=",">
+            ${item.property} ${item.operator}
+        </foreach>
+    </sql>
+
+    <sql id="LIMIT_SQL">
+        LIMIT ${params.limit.value}, ${params.limit.secondValue}
+    </sql>
+
+    <sql id="CONDITION_SQL">
+        <if test="params != null">
+            <include refid="WHERE_SQL"/>
+
+            <if test="params.groupBy != null and !params.groupBy.isEmpty">
+                <include refid="GROUP_BY_SQL"/>
+            </if>
+
+            <if test="params.orderBy != null and !params.orderBy.isEmpty">
+                <include refid="ORDER_BY_SQL"/>
+            </if>
+
+            <if test="params.limit != null">
+                <include refid="LIMIT_SQL"/>
+            </if>
+        </if>
+    </sql>
+</mapper>

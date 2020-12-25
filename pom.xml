@@ -18,11 +18,19 @@
 
         <junit.version>4.13</junit.version>
         <lombok.version>1.18.12</lombok.version>
+        <mybatis.version>3.5.5</mybatis.version>
         <wah.commons.version>0.0.1</wah.commons.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- mybatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
             <!-- wah -->
             <dependency>
                 <groupId>com.wah</groupId>

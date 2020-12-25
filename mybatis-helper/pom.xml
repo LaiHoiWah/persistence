@@ -23,6 +23,13 @@
     </parent>
 
     <dependencies>
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- wah -->
         <dependency>
             <groupId>com.wah</groupId>
