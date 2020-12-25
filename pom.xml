@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.wah</groupId>
+    <artifactId>persistence</artifactId>
+    <version>0.0.1</version>
+    <name>persistence</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.name>persistence</project.name>
+        <project.build.encoding>UTF-8</project.build.encoding>
+        <project.jdk.version>1.8</project.jdk.version>
+
+        <junit.version>4.13</junit.version>
+        <lombok.version>1.18.12</lombok.version>
+        <wah.commons.version>0.0.1</wah.commons.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- wah -->
+            <dependency>
+                <groupId>com.wah</groupId>
+                <artifactId>commons</artifactId>
+                <version>${wah.commons.version}</version>
+            </dependency>
+
+            <!-- lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <!-- junit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>mybatis-helper</module>
+    </modules>
+</project>
